@@ -648,6 +648,48 @@ The following 7 skills raise output quality on writing and visual work. They enc
 
 ---
 
+### /slop-gate
+
+**Description:** Deterministic pre-publish scan that refuses AI-slop tells in anything about to be written, published, or sent.
+
+**Triggers:**
+- "scan this before I publish"
+- Before any deliverable leaves the session: file, artifact, deck, Slack message, issue body, commit
+- As a CI step or a Claude Code hook
+
+**Purpose:** `/no-ai-slop` is an editor you invoke; this is a gate that runs whether or not anyone remembers it. A rules file fires in the step a model calls writing and stays silent in the step it calls layout, which is how a deck ends up with clean paragraphs under headline slide titles.
+
+**What it does:**
+1. Scans outgoing text and exits non-zero on a tell, with the hit list and surrounding context
+2. Hard tells fail on one hit (em dash, honesty framing, "not X it's Y" and its trailing "X, not Y" form, rhetorical and "The \<Noun\>" headings, verdict kickers, sycophancy, recap endings)
+3. Filler words are counted, not banned: three or more in one piece fails
+4. Quoted and backticked spans are stripped first, so a piece may quote the tells it discusses; `slop-ok: <reason>` exempts a whole file
+5. `--hook` mode answers a Claude Code PreToolUse or Stop payload with a permission decision (opt-in, wiring in the skill)
+
+**Limit:** regular expressions cannot see structural slop (invented frameworks, uniform rhythm, restatement). Pair with `/no-ai-slop` detect mode and a reviewer from a different model family than the author.
+
+---
+
+### /voice-baseline
+
+**Description:** Measure your own writing corpus for the words and sentence shapes you over-use, so an agent writing in your voice stops amplifying your tics into a style.
+
+**Triggers:**
+- "why do my drafts all sound the same?"
+- Before publishing anything written in your voice
+- Every ten new pieces, to re-measure
+
+**Purpose:** An agent samples the median of *you*, not only the median of the internet, and regresses toward your most frequent choices. A generic ban list cannot catch it because the words are yours.
+
+**What it does:**
+1. Walks a directory of your finished writing and reports word counts with a per-file rate
+2. Counts sentence shapes: paragraph-ending verdict sentences, kicker closers, endings that ask the reader a question
+3. Reports sentence openers and heading first words, where a personal tic hides best
+4. `--check DRAFT` prints only what sits above your corpus rate, exit 1 when anything does
+5. Writes a baseline file to keep beside your rules so the agent reads it before writing
+
+---
+
 ### /editorial-illustrations
 
 **Description:** Generate meaning-carrying editorial data-illustrations in a near-black grayscale + single-accent aesthetic. A **generative guide**, not a template gallery. It teaches the "claim → geometry" method.

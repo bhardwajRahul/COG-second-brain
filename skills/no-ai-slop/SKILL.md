@@ -83,6 +83,81 @@ Often-empty phrases: it's worth noting, it's important to note, at the end of th
 
 **Em dashes.** Do not use them as a default rhythm crutch. In short copy, use none. In longer drafts, 1-2 are fine if they clearly beat commas, periods, or parentheses. Remove clusters and decorative dashes.
 
+## Scope: every medium, not only prose
+
+These rules govern the substance and the labels of every output, not paragraphs alone:
+slide titles and kickers, tile and card labels, table headers and row keys, diagram node
+and edge labels, chart titles and legends, button copy, subtitles, alt text, chat and
+email drafts, issue and PR bodies, commit messages, code comments, memory files.
+
+A rules file that says "writing" fires in the step a model calls writing and stays silent
+in the step it calls layout. That is how a deck ends up with clean paragraphs under
+headline slide titles. Name every surface, then scan every heading and label before
+publishing, separately from reading the body.
+
+**Titles and headings name their subject.** "New runner architecture", "Current
+challenges", "Sources". Three shapes fail:
+
+- **Number pairing.** "One harness, four swappable sides." "Four walls, seven accounts."
+  "Five calls to make this month." Two small integers joined by a comma read as structure
+  and carry none.
+- **Metaphor in place of the noun.** "The wedge" for a differentiator, "walls" for
+  challenges, "shells" for deployment targets. The reader decodes an image to reach a word
+  you could have written.
+- **Question or clause as title.** "Why hard apps are the niche." "Where the facts come
+  from." A title that withholds its answer costs a beat every time someone scans the index.
+
+## Reader-cited tells
+
+From a hand-audited sample of 600 posts (out of 89,239 pulled across 47 subreddits) about
+what makes writing read as AI, ranked by how often readers actually name each tell: em dash
+7.1%, uniform sentence rhythm 4.0%, "not just X, it's Y" 2.8%, five-paragraph essay shape
+2.5%, sycophancy such as "great question" 2.5%, "dive in / deep dive" 2.0%, bullet lists
+where prose belongs 1.7%, diction memes such as "delve" 1.3%, rule-of-three triads 1.2%,
+emoji headers 0.8%, "unlock the potential" 0.8%, "in today's fast-paced world" 0.7%, no
+contractions 0.7%, empty phrasing 0.7%, both-sides hedging 0.3%.
+
+Two corrections that matter more than the ranking:
+
+- **A keyword scanner ranks the wrong things.** In the same corpus "however", "thus" and
+  "hence" were the top keyword match at 6.3% of posts and were cited as a tell zero times.
+  Do not flag ordinary connectives.
+- **The tells readers rank highest cannot be keyword-matched at all.** Uniform rhythm and
+  the fluent-but-empty paragraph need a reader. So does sycophancy.
+
+Also named by readers and worth adding to any watchlist: genuinely, quietly, load-bearing,
+hinge, seams, "let that sink in", "what nobody talks about", "this changes everything", and
+subheadings shaped "The \<Noun\>" ("The Start", "The Gamechanger").
+
+**Malicious compliance is the failure mode of a ban list.** Ban the em dash and the model
+substitutes ", and" or a semicolon or a colon reveal; ban "not X but Y" and it produces
+"X. Y." fragments. The driver underneath is over-explanation and restatement. A systemic
+instruction ("be airy, do not over-explain, do not restate") does more than two dozen bans.
+
+## Voice-mode tells
+
+An agent writing in someone's voice samples the median of that person, not only the median
+of the internet, and regresses toward their most frequent choices. A word that was a choice
+at one use comes back at five, and the fifth use teaches the next draft.
+
+Generic ban lists miss this, because the words are the author's own. Measure them: the
+`voice-baseline` skill counts a corpus and checks a draft against its own rates. Typical
+finds in a real 27-file archive: 53 headings starting with "The", 387 of 2,288 sentences
+opening with "The", 25 closing lines of the form "That is the point."
+
+Caps that hold regardless of whose voice it is:
+
+- One paragraph-ending verdict sentence per piece ("The fix was one line."), and only when
+  it carries a fact the paragraph has not already delivered.
+- Zero kicker closers ("That is the point.", "That is all a title is for.").
+- Do not end on a question to the reader by default. End on the last concrete fact.
+- One narrative heading pattern per piece; the rest name their subject.
+- A verb for each action: use "ship" for a software release, and give publishing, saving,
+  sending and deploying their own verbs.
+
+For the mechanical half of all of this, `slop-gate` scans outgoing text and refuses on a
+hard tell, so the check does not depend on being remembered.
+
 ## Structural slop
 
 Word bans catch surface slop. The deeper tell is composition: predictable rhetorical structure with low information gain. A draft can pass every word check and still read as a miniature consulting memo. These patterns apply to the shape of the whole piece, not individual sentences.

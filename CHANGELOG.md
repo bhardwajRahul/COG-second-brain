@@ -2,6 +2,35 @@
 
 All notable changes to COG (Cognition + Obsidian + Git) will be documented in this file.
 
+## [3.13.0] - 2026-09-14
+
+### Added
+
+#### slop-gate: the anti-slop rules stop depending on being remembered
+`no-ai-slop` is an editor you invoke. `slop-gate` is a scan that runs whether or not anyone remembers it: it reads outgoing text, exits non-zero on a tell, and prints the hit list with surrounding context so the rewrite is targeted.
+
+The gap it closes came from a real failure. A slide deck built by an agent carried paragraphs that passed every rule in the file, under slide titles reading "One harness, four swappable sides", "Four walls, seven accounts", "Five calls to make this month". The rules were filed under writing; the titles were produced in a step the agent treated as layout, where the rules never ran. Every surface nobody named explicitly sat on the unchecked side: table headers, diagram labels, chart legends, button copy, commit messages, memory-file descriptions.
+
+- `scripts/scan.py` works as a CLI (`scan.py FILE`, stdin, glob), as a CI step (exit 1 on a tell), and with `--hook` as a Claude Code PreToolUse/Stop hook. COG still ships no hooks; the wiring is a snippet in the skill for anyone who wants it.
+- Two tiers: hard tells fail on one hit (em dash, honesty framing, "not X, it's Y" and its trailing "X, not Y" form, rhetorical headings, "The \<Noun\>" headings, verdict kickers, fake-profound closers, throat-clearing, sycophancy, recap endings, emoji headings). Filler words are counted and fail at three, on the reading that density means decoration.
+- Quoted and backticked spans are stripped before scanning, so a style guide can quote the tells it blocks. `slop-ok: <reason>` exempts a whole file.
+- Stated limit: regular expressions cannot see invented frameworks, uniform rhythm, or restatement. The skill says so and routes those to `no-ai-slop` detect mode plus a reviewer from a different model family.
+
+#### voice-baseline: measure your own tics before an agent turns them into a style
+An agent writing in your voice samples the median of you, not only the median of the internet, and regresses toward your most frequent choices. A generic ban list misses it because the words are yours.
+
+- `scripts/census.py` walks a corpus of your finished writing and reports word counts with a per-file rate, paragraph-ending verdict sentences, kicker closers, endings that ask the reader a question, sentence openers, and heading first words.
+- `--check DRAFT` prints only what sits above your corpus rate and exits 1 when anything does, so it fits a pre-publish script.
+- Run on a real 27-file archive it found 53 headings starting with "The" and 387 of 2,288 sentences opening the same way: the exact shape people name as an AI tell, learned from the author's own archive rather than from the model.
+
+### Changed
+
+#### no-ai-slop gains scope, measured reader data, and the voice-mode section
+- **Scope: every medium.** The rules now name slide titles, kickers, tile and card labels, table headers, diagram labels, chart legends, button copy, alt text, chat and email drafts, issue and PR bodies, commit messages, code comments and memory files, plus the three failing title shapes (number pairing, metaphor for the noun, question as title).
+- **Reader-cited tells.** Ranked from a hand-audited sample of 600 posts drawn from 89,239 across 47 subreddits: em dash 7.1%, uniform sentence rhythm 4.0%, "not just X, it's Y" 2.8%, five-paragraph shape and sycophancy 2.5% each, diction memes 1.3%. Two corrections ride along: a keyword scanner ranks "however/thus/hence" first at 6.3% of posts where readers cite them zero times, and the tells readers rank highest cannot be keyword-matched at all.
+- **Malicious compliance** named as the failure mode of a ban list: ban the dash and the model reaches for a semicolon or a colon reveal, because the driver underneath is over-explanation and restatement.
+- **Voice-mode tells** with the caps that hold in any voice: one verdict sentence per piece, zero kicker closers, no default question ending, one narrative heading pattern, a distinct verb for each action.
+
 ## [3.12.0] - 2026-08-25
 
 ### Changed
